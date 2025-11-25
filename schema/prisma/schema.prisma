@@ -26,6 +26,8 @@ model Category {
   id Int @id @default(autoincrement())
   name String @unique
 
+  items ItemCategory[]
+
   @@map("categories")
 }
 
@@ -49,5 +51,18 @@ model Item {
   class Class @relation(fields: [classId], references: [id])
   name String @unique
 
+  categories ItemCategory[]
+
   @@map("items")
+}
+
+model ItemCategory {
+  itemId Int @map("item_id")
+  item Item @relation(fields: [itemId], references: [id])
+
+  categoryId Int @map("category_id")
+  category Category @relation(fields: [categoryId], references: [id])
+
+  @@map("item_categories")
+  @@id([itemId, categoryId])
 }
