@@ -46,6 +46,10 @@ model Trait {
 
   items ItemTraits[]
 
+  composition TraitComposition? @relation(name: "composition")
+  lhs TraitComposition[] @relation(name: "lhs")
+  rhs TraitComposition[] @relation(name: "rhs")
+
   @@map("traits")
 }
 
@@ -93,4 +97,18 @@ model ItemTraits {
 
   @@map("item_traits")
   @@id([itemId, traitId])
+}
+
+model TraitComposition {
+  traitId Int @id @map("trait_id")
+  trait Trait @relation(name: "composition", fields: [traitId], references: [id])
+
+  lhsId Int @map("lhs_id")
+  lhs Trait @relation(name: "lhs", fields: [lhsId], references: [id])
+
+  rhsId Int @map("rhs_id")
+  rhs Trait @relation(name: "rhs", fields: [rhsId], references: [id])
+
+  @@map("trait_compositions")
+  @@unique([lhsId, rhsId])
 }
