@@ -12,3 +12,31 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model Class {
+  id Int @id @default(autoincrement())
+  name String @unique
+
+  @@map("classes")
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+  name String @unique
+
+  @@map("categories")
+}
+
+model Effect {
+  id Int @id @default(autoincrement())
+  name String @unique
+
+  @@map("effects")
+}
+
+model Trait {
+  id Int @id @default(autoincrement())
+  name String @unique
+
+  @@map("traits")
+}
