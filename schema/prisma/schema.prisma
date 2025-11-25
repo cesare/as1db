@@ -35,6 +35,8 @@ model Effect {
   id Int @id @default(autoincrement())
   name String @unique
 
+  items ItemEffects[]
+
   @@map("effects")
 }
 
@@ -52,6 +54,7 @@ model Item {
   name String @unique
 
   categories ItemCategory[]
+  effects ItemEffects[]
 
   @@map("items")
 }
@@ -65,4 +68,15 @@ model ItemCategory {
 
   @@map("item_categories")
   @@id([itemId, categoryId])
+}
+
+model ItemEffects {
+  itemId Int @map("item_id")
+  item Item @relation(fields: [itemId], references: [id])
+
+  effectId Int @map("effect_id")
+  effect Effect @relation(fields: [effectId], references: [id])
+
+  @@map("item_effects")
+  @@id([itemId, effectId])
 }
