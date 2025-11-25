@@ -17,6 +17,8 @@ model Class {
   id Int @id @default(autoincrement())
   name String @unique
 
+  items Item[]
+
   @@map("classes")
 }
 
@@ -39,4 +41,13 @@ model Trait {
   name String @unique
 
   @@map("traits")
+}
+
+model Item {
+  id Int @id @default(autoincrement())
+  classId Int @map("class_id")
+  class Class @relation(fields: [classId], references: [id])
+  name String @unique
+
+  @@map("items")
 }
