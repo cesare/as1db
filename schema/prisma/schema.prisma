@@ -28,6 +28,8 @@ model Category {
 
   items ItemCategory[]
 
+  materialParents MaterialCategory[]
+
   @@map("categories")
 }
 
@@ -63,6 +65,7 @@ model Item {
   effects ItemEffects[]
   traits ItemTraits[]
 
+  materialCategories MaterialCategory[]
   materialItems MaterialItem[] @relation(name: "item")
   parentItems MaterialItem[] @relation(name: "material_item")
 
@@ -125,4 +128,15 @@ model MaterialItem {
 
   @@map("material_items")
   @@id([itemId, materialItemId])
+}
+
+model MaterialCategory {
+  itemId Int @map("item_id")
+  item Item @relation(fields: [itemId], references: [id])
+
+  categoryId Int @map("category_id")
+  category Category @relation(fields: [categoryId], references: [id])
+
+  @@map("material_categories")
+  @@id([itemId, categoryId])
 }
