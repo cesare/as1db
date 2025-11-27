@@ -63,6 +63,9 @@ model Item {
   effects ItemEffects[]
   traits ItemTraits[]
 
+  materialItems MaterialItem[] @relation(name: "item")
+  parentItems MaterialItem[] @relation(name: "material_item")
+
   @@map("items")
 }
 
@@ -111,4 +114,15 @@ model TraitComposition {
 
   @@map("trait_compositions")
   @@unique([lhsId, rhsId])
+}
+
+model MaterialItem {
+  itemId Int @map("item_id")
+  item Item @relation(name: "item", fields: [itemId], references: [id])
+
+  materialItemId Int @map("material_item_id")
+  materialItem Item @relation(name: "material_item", fields: [materialItemId], references: [id])
+
+  @@map("material_items")
+  @@id([itemId, materialItemId])
 }
