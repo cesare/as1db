@@ -29,14 +29,21 @@ GEM
       fiber-local (~> 1.1)
       json
     csv (3.3.5)
+    date (3.5.0)
     drb (2.2.3)
+    erb (6.0.0)
     fiber-annotation (0.2.0)
     fiber-local (1.1.0)
       fiber-storage
     fiber-storage (1.0.1)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
+    io-console (0.8.1)
     io-event (1.14.2)
+    irb (1.15.3)
+      pp (>= 0.6.0)
+      rdoc (>= 4.0.0)
+      reline (>= 0.4.2)
     json (2.16.0)
     logger (1.7.0)
     minitest (5.26.2)
@@ -53,7 +60,21 @@ GEM
     pg (1.6.2-x86_64-darwin)
     pg (1.6.2-x86_64-linux)
     pg (1.6.2-x86_64-linux-musl)
+    pp (0.6.3)
+      prettyprint
+    prettyprint (0.2.0)
+    psych (5.2.6)
+      date
+      stringio
+    rdoc (6.16.0)
+      erb
+      psych (>= 4.0.0)
+      tsort
+    reline (0.6.3)
+      io-console (~> 0.5)
     securerandom (0.4.1)
+    stringio (3.1.8)
+    tsort (0.2.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uri (1.1.1)
@@ -70,6 +91,7 @@ PLATFORMS
 
 DEPENDENCIES
   csv
+  irb
   neo4j-ruby-driver
   pg
 

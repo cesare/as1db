@@ -3,5 +3,6 @@
 source "https://rubygems.org"
 
 gem "csv"
+gem "irb"
 gem "neo4j-ruby-driver"
 gem "pg"
