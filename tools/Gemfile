@@ -3,4 +3,5 @@
 source "https://rubygems.org"
 
 gem "csv"
+gem "neo4j-ruby-driver"
 gem "pg"
