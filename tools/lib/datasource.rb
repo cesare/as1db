@@ -30,6 +30,8 @@ class ItemCategory
   end
 end
 
+MaterialItem = Struct.new(:item, :material)
+
 class DataSource
   private attr_reader :db
 
@@ -95,6 +97,28 @@ class DataSource
         item = Item.new(row['item_id'].to_i, row['item_name'])
         category = Category.new(row['category_id'].to_i, row['category_name'])
         ItemCategory.new(item:, category:)
+      end
+    end
+  end
+
+  def material_items
+    statement = <<~SQL
+      select
+        item.id as item_id,
+        item.name as item_name,
+        material.id as material_item_id,
+        material.name as material_item_name
+      from material_items as mi
+        inner join items as item on mi.item_id = item.id
+        inner join items as material on mi.material_item_id = material.id
+      order by 1, 3
+    SQL
+
+    db.exec(statement) do |results|
+      results.map do |row|
+        item = Item.new(row["item_id"].to_i, row["item_name"])
+        material = Item.new(row["material_item_id"].to_i, row["material_item_name"])
+        MaterialItem.new(item, material)
       end
     end
   end
