@@ -6,6 +6,8 @@ Category = Struct.new(:id, :name)
 Trait = Struct.new(:id, :name)
 
 class DataSet
+  include Enumerable
+
   private attr_reader :records
 
   def initialize(records)
@@ -19,6 +21,8 @@ class DataSet
   def find_by_name(name)
     records.find { it.name == name }
   end
+
+  def each(&block) = records.each(&block)
 end
 
 ItemCategory = Struct.new(:item, :category)
