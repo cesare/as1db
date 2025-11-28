@@ -21,6 +21,15 @@ class DataSet
   end
 end
 
+class ItemCategory
+  private attr_reader :item, :category
+
+  def initialize(item:, category:)
+    @item = item
+    @category = category
+  end
+end
+
 class DataSource
   private attr_reader :db
 
@@ -66,6 +75,28 @@ class DataSource
       end
     end
     DataSet.new(records)
+  end
+
+  def item_categories
+    statement = <<~SQL
+      select
+        items.id as item_id,
+        items.name as item_name,
+        categories.id as category_id,
+        categories.name as category_name
+      from item_categories
+        inner join items on item_categories.item_id = items.id
+        inner join categories on item_categories.category_id = categories.id
+      order by 1, 3
+    SQL
+
+    db.exec(statement) do |results|
+      results.map do |row|
+        item = Item.new(row['item_id'].to_i, row['item_name'])
+        category = Category.new(row['category_id'].to_i, row['category_name'])
+        ItemCategory.new(item:, category:)
+      end
+    end
   end
 
   private
