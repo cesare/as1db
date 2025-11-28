@@ -21,15 +21,7 @@ class DataSet
   end
 end
 
-class ItemCategory
-  private attr_reader :item, :category
-
-  def initialize(item:, category:)
-    @item = item
-    @category = category
-  end
-end
-
+ItemCategory = Struct.new(:item, :category)
 MaterialItem = Struct.new(:item, :material)
 MaterialCategory = Struct.new(:item, :category)
 
@@ -95,9 +87,9 @@ class DataSource
 
     db.exec(statement) do |results|
       results.map do |row|
-        item = Item.new(row['item_id'].to_i, row['item_name'])
-        category = Category.new(row['category_id'].to_i, row['category_name'])
-        ItemCategory.new(item:, category:)
+        item = Item.new(row["item_id"].to_i, row["item_name"])
+        category = Category.new(row["category_id"].to_i, row["category_name"])
+        ItemCategory.new(item, category)
       end
     end
   end
