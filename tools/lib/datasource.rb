@@ -76,6 +76,27 @@ class DataSource
     DataSet.new(records)
   end
 
+  def items_with_class
+    statement = <<~SQL
+      select
+        items.id as item_id,
+        items.name as item_name,
+        classes.id as class_id,
+        classes.name as class_name
+      from items
+        inner join classes on items.class_id = classes.id
+      order by 1, 3
+    SQL
+
+    db.exec(statement) do |results|
+      results.map do |row|
+        item = Item.new(row["item_id"].to_i, row["item_name"])
+        clazz = Clazz.new(row["class_id"].to_i, row["class_name"])
+        [item, clazz]
+      end
+    end
+  end
+
   def item_categories
     statement = <<~SQL
       select
