@@ -63,7 +63,7 @@ GraphDB.new.session do |s|
         (c:Category {name: $category_name}) <-[:BELONGS_TO]- (m:Item)
       create
         (i) -[:REQUIRES]-> (c),
-        (m) -[:MATERIAL_OF]-> (i)
+        (m) -[:MATERIAL_OF {as: $category_name}]-> (i)
     CYPHER
     s.run(statement, item_name: item.name, category_name: category.name)
   end
