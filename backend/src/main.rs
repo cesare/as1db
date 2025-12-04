@@ -2,6 +2,7 @@ use actix_cors::Cors;
 use actix_web::{App, HttpServer, http::header, web::Data};
 
 mod context;
+mod handlers;
 
 use crate::context::Context;
 
@@ -20,6 +21,7 @@ async fn main() -> anyhow::Result<()> {
         App::new()
             .wrap(build_cors())
             .app_data(Data::new(context.clone()))
+            .configure(handlers::routes)
     });
     server.bind(("localhost", 3000))?.run().await?;
     Ok(())
