@@ -2,7 +2,10 @@ use actix_cors::Cors;
 use actix_web::{App, HttpServer, http::header, web::Data};
 
 mod context;
+mod errors;
 mod handlers;
+mod models;
+mod views;
 
 use crate::context::Context;
 
