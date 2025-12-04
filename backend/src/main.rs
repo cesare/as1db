@@ -1,5 +1,9 @@
 use actix_cors::Cors;
-use actix_web::{App, HttpServer, http::header};
+use actix_web::{App, HttpServer, http::header, web::Data};
+
+mod context;
+
+use crate::context::Context;
 
 fn build_cors() -> Cors {
     Cors::default()
@@ -11,9 +15,11 @@ fn build_cors() -> Cors {
 
 #[actix_rt::main]
 async fn main() -> anyhow::Result<()> {
+    let context = Context::load()?;
     let server = HttpServer::new(move || {
         App::new()
             .wrap(build_cors())
+            .app_data(Data::new(context.clone()))
     });
     server.bind(("localhost", 3000))?.run().await?;
     Ok(())
