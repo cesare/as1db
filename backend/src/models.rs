@@ -57,3 +57,31 @@ impl<'a> CategoryResources<'a> {
         Ok(categories)
     }
 }
+
+#[derive(Clone, Deserialize, Serialize, sqlx::Type)]
+#[sqlx(transparent)]
+pub struct ItemId(i32);
+
+#[derive(Clone, Deserialize, FromRow)]
+pub struct Item {
+    pub id: ItemId,
+    pub class_id: ClassId,
+    pub name: String,
+}
+
+pub struct ItemResources<'a> {
+    context: &'a Context,
+}
+
+impl<'a> ItemResources<'a> {
+    pub fn new(context: &'a Context) -> Self {
+        Self { context }
+    }
+
+    pub async fn list(&self) -> Result<Vec<Item>, DatabaseError> {
+        let items: Vec<Item> = sqlx::query_as("select id, class_id, name from items order by id")
+            .fetch_all(&self.context.pool)
+            .await?;
+        Ok(items)
+    }
+}
