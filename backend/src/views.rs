@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use crate::models::{Class, ClassId};
+use crate::models::{Category, CategoryId, Class, ClassId};
 
 #[derive(Serialize)]
 #[serde(rename = "camelCase")]
@@ -14,6 +14,22 @@ impl<'a> ClassView<'a> {
         Self {
             id: &class.id,
             name: &class.name,
+        }
+    }
+}
+
+#[derive(Serialize)]
+#[serde(rename = "camelCase")]
+pub struct CategoryView<'a> {
+    id: &'a CategoryId,
+    name: &'a String,
+}
+
+impl<'a> CategoryView<'a> {
+    pub fn new(category: &'a Category) -> Self {
+        Self {
+            id: &category.id,
+            name: &category.name,
         }
     }
 }
