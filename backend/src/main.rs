@@ -1,5 +1,6 @@
 use actix_cors::Cors;
-use actix_web::{App, HttpServer, http::header, web::Data};
+use actix_web::{App, HttpServer, http::header, middleware::Logger, web::Data};
+use env_logger::Env;
 
 mod context;
 mod errors;
@@ -19,10 +20,15 @@ fn build_cors() -> Cors {
 
 #[actix_rt::main]
 async fn main() -> anyhow::Result<()> {
+    env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
+
     let context = Context::load()?;
     let server = HttpServer::new(move || {
         App::new()
             .wrap(build_cors())
+            .wrap(Logger::new(
+                "%a %t \"%r\" %s %b \"%{Referer}i\" \"%{User-Agent}i\" %T",
+            ))
             .app_data(Data::new(context.clone()))
             .configure(handlers::routes)
     });
