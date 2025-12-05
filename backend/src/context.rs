@@ -5,6 +5,7 @@ use sqlx::{PgPool, Pool, Postgres};
 #[derive(Clone, Deserialize)]
 pub struct Config {
     pub database_url: String,
+    pub bind_address: String,
 }
 
 #[allow(dead_code)]

@@ -23,6 +23,8 @@ async fn main() -> anyhow::Result<()> {
     env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
 
     let context = Context::load()?;
+    let bind_address = context.config.bind_address.to_owned();
+
     let server = HttpServer::new(move || {
         App::new()
             .wrap(build_cors())
@@ -32,6 +34,6 @@ async fn main() -> anyhow::Result<()> {
             .app_data(Data::new(context.clone()))
             .configure(handlers::routes)
     });
-    server.bind(("localhost", 3000))?.run().await?;
+    server.bind(bind_address)?.run().await?;
     Ok(())
 }
