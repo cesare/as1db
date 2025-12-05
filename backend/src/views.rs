@@ -3,7 +3,7 @@ use serde::Serialize;
 use crate::models::{Category, CategoryId, Class, ClassId, Item, ItemId};
 
 #[derive(Serialize)]
-#[serde(rename = "camelCase")]
+#[serde(rename_all = "camelCase")]
 pub struct ClassView<'a> {
     id: &'a ClassId,
     name: &'a String,
@@ -19,7 +19,7 @@ impl<'a> ClassView<'a> {
 }
 
 #[derive(Serialize)]
-#[serde(rename = "camelCase")]
+#[serde(rename_all = "camelCase")]
 pub struct CategoryView<'a> {
     id: &'a CategoryId,
     name: &'a String,
