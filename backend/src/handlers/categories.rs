@@ -14,9 +14,9 @@ pub(super) fn routes(config: &mut ServiceConfig) {
 
 async fn index(context: Data<Context>) -> Result<HttpResponse, PerRequestError> {
     let resources = CategoryResources::new(&context);
-    let classes = resources.list().await?;
+    let categories = resources.list().await?;
     let response_json = json!({
-        "categories": classes.iter().map(CategoryView::new).collect::<Vec<CategoryView>>(),
+        "categories": categories.iter().map(CategoryView::new).collect::<Vec<CategoryView>>(),
     });
     let response = HttpResponse::Ok().json(response_json);
     Ok(response)
