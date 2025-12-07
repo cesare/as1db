@@ -131,3 +131,26 @@ impl<'a> MaterialItemResources<'a> {
         Ok(mis)
     }
 }
+
+#[derive(Clone, Deserialize, FromRow)]
+pub struct MaterialCategory {
+    pub item_id: ItemId,
+    pub category_id: CategoryId,
+}
+
+pub struct MaterialCategoryResources<'a> {
+    context: &'a Context,
+}
+
+impl<'a> MaterialCategoryResources<'a> {
+    pub fn new(context: &'a Context) -> Self {
+        Self { context }
+    }
+
+    pub async fn list(&self) -> Result<Vec<MaterialCategory>, DatabaseError> {
+        let mcs: Vec<MaterialCategory> = sqlx::query_as("select item_id, category_id from material_categories order by item_id")
+            .fetch_all(&self.context.pool)
+            .await?;
+        Ok(mcs)
+    }
+}
