@@ -3,7 +3,7 @@ use sqlx::prelude::FromRow;
 
 use crate::{context::Context, errors::DatabaseError};
 
-#[derive(Clone, Deserialize, Serialize, sqlx::Type)]
+#[derive(Clone, Deserialize, PartialEq, Eq, Serialize, sqlx::Type)]
 #[sqlx(transparent)]
 pub struct ClassId(i32);
 
@@ -30,7 +30,7 @@ impl<'a> ClassResources<'a> {
     }
 }
 
-#[derive(Clone, Deserialize, Serialize, sqlx::Type)]
+#[derive(Clone, Deserialize, PartialEq, Eq, Serialize, sqlx::Type)]
 #[sqlx(transparent)]
 pub struct CategoryId(i32);
 
@@ -58,7 +58,7 @@ impl<'a> CategoryResources<'a> {
     }
 }
 
-#[derive(Clone, Deserialize, Serialize, sqlx::Type)]
+#[derive(Clone, Deserialize, PartialEq, Eq, Serialize, sqlx::Type)]
 #[sqlx(transparent)]
 pub struct ItemId(i32);
 
