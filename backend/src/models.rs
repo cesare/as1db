@@ -1,5 +1,6 @@
+use indoc::indoc;
 use serde::{Deserialize, Serialize};
-use sqlx::prelude::FromRow;
+use sqlx::{prelude::FromRow, types::Json};
 
 use crate::{context::Context, errors::DatabaseError};
 
@@ -7,7 +8,7 @@ use crate::{context::Context, errors::DatabaseError};
 #[sqlx(transparent)]
 pub struct ClassId(i32);
 
-#[derive(Clone, Deserialize, FromRow)]
+#[derive(Clone, Deserialize, FromRow, sqlx::Type)]
 pub struct Class {
     pub id: ClassId,
     pub name: String,
@@ -34,7 +35,7 @@ impl<'a> ClassResources<'a> {
 #[sqlx(transparent)]
 pub struct CategoryId(i32);
 
-#[derive(Clone, Deserialize, FromRow)]
+#[derive(Clone, Deserialize, FromRow, sqlx::Type)]
 pub struct Category {
     pub id: CategoryId,
     pub name: String,
@@ -62,7 +63,7 @@ impl<'a> CategoryResources<'a> {
 #[sqlx(transparent)]
 pub struct ItemId(i32);
 
-#[derive(Clone, Deserialize, FromRow)]
+#[derive(Clone, Deserialize, FromRow, sqlx::Type)]
 pub struct Item {
     pub id: ItemId,
     pub class_id: ClassId,
@@ -109,7 +110,7 @@ impl<'a> ItemCategoryResources<'a> {
     }
 }
 
-#[derive(Clone, Deserialize, FromRow)]
+#[derive(Clone, Deserialize, FromRow, sqlx::Type)]
 pub struct MaterialItem {
     pub item_id: ItemId,
     pub material_item_id: ItemId,
@@ -132,7 +133,7 @@ impl<'a> MaterialItemResources<'a> {
     }
 }
 
-#[derive(Clone, Deserialize, FromRow)]
+#[derive(Clone, Deserialize, FromRow, sqlx::Type)]
 pub struct MaterialCategory {
     pub item_id: ItemId,
     pub category_id: CategoryId,
@@ -152,5 +153,72 @@ impl<'a> MaterialCategoryResources<'a> {
             .fetch_all(&self.context.pool)
             .await?;
         Ok(mcs)
+    }
+}
+
+#[derive(Clone, Deserialize, FromRow)]
+pub struct ItemWithDetails {
+    pub id: ItemId,
+    pub name: String,
+    pub class: Class,
+    pub categories: Vec<Category>,
+    pub material_items: Vec<MaterialItem>,
+    pub material_categories: Vec<MaterialCategory>,
+}
+
+pub struct ItemWithDetailsResources<'a> {
+    context: &'a Context,
+}
+
+impl<'a> ItemWithDetailsResources<'a> {
+    pub fn new(context: &'a Context) -> Self {
+        Self { context }
+    }
+
+    pub async fn list(&self) -> Result<Vec<ItemWithDetails>, DatabaseError> {
+        let statement = indoc! {"
+            with categories_for_items as (
+                select
+                    ic.item_id as item_id,
+                    array_agg(to_json(categories)) as categories
+                from item_categories as ic
+                    inner join categories on ic.category_id = categories.id
+                group by 1
+            ),
+            material_items_for_items as (
+                select
+                    mi.item_id as item_id,
+                    array_agg(to_json(items)) as material_items
+                from material_items as mi
+                    inner join items on mi.material_item_id = items.id
+                group by 1
+            ),
+            material_categories_for_items as (
+                select
+                    mc.item_id as item_id,
+                    array_agg(to_json(categories)) as material_categories
+                from material_categories as mc
+                    inner join categories on mc.category_id = categories.id
+                group by 1
+            )
+
+            select
+                items.id,
+                items.name,
+                to_json(classes) as class,
+                c.categories as categories,
+                coalesce(mi.material_items, array[]::json[]) as material_items,
+                coalesce(mc.material_categories, array[]::json[]) as material_categories
+            from items
+                inner join classes on items.class_id = classes.id
+                inner join categories_for_items as c on items.id = c.item_id
+                left outer join material_items_for_items as mi on items.id = mi.item_id
+                left outer join material_categories_for_items as mc on items.id = mc.item_id
+            order by 1
+        "};
+        let ids: Vec<ItemWithDetails> = sqlx::query_as(statement)
+            .fetch_all(&self.context.pool)
+            .await?;
+        Ok(ids)
     }
 }
