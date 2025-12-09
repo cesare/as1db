@@ -69,9 +69,9 @@ impl<'a> ItemWithDetailsView<'a> {
             id: &item.id,
             name: &item.name,
             class: ClassView::new(&item.class),
-            categories: item.categories.iter().map(|c| CategoryView::new(&c)).collect(),
-            material_items: item.material_items.iter().map(|i| ItemView::new(&i)).collect(),
-            material_categories: item.material_categories.iter().map(|c| CategoryView::new(&c)).collect(),
+            categories: item.categories.iter().map(|c| CategoryView::new(c)).collect(),
+            material_items: item.material_items.iter().map(|i| ItemView::new(i)).collect(),
+            material_categories: item.material_categories.iter().map(|c| CategoryView::new(c)).collect(),
         }
     }
 }
