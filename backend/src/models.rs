@@ -103,9 +103,10 @@ impl<'a> ItemCategoryResources<'a> {
     }
 
     pub async fn list(&self) -> Result<Vec<ItemCategory>, DatabaseError> {
-        let ics: Vec<ItemCategory> = sqlx::query_as("select item_id, category_id from item_categories order by item_id")
-            .fetch_all(&self.context.pool)
-            .await?;
+        let ics: Vec<ItemCategory> =
+            sqlx::query_as("select item_id, category_id from item_categories order by item_id")
+                .fetch_all(&self.context.pool)
+                .await?;
         Ok(ics)
     }
 }
@@ -126,9 +127,10 @@ impl<'a> MaterialItemResources<'a> {
     }
 
     pub async fn list(&self) -> Result<Vec<MaterialItem>, DatabaseError> {
-        let mis: Vec<MaterialItem> = sqlx::query_as("select item_id, material_item_id from material_items order by item_id")
-            .fetch_all(&self.context.pool)
-            .await?;
+        let mis: Vec<MaterialItem> =
+            sqlx::query_as("select item_id, material_item_id from material_items order by item_id")
+                .fetch_all(&self.context.pool)
+                .await?;
         Ok(mis)
     }
 }
@@ -149,9 +151,10 @@ impl<'a> MaterialCategoryResources<'a> {
     }
 
     pub async fn list(&self) -> Result<Vec<MaterialCategory>, DatabaseError> {
-        let mcs: Vec<MaterialCategory> = sqlx::query_as("select item_id, category_id from material_categories order by item_id")
-            .fetch_all(&self.context.pool)
-            .await?;
+        let mcs: Vec<MaterialCategory> =
+            sqlx::query_as("select item_id, category_id from material_categories order by item_id")
+                .fetch_all(&self.context.pool)
+                .await?;
         Ok(mcs)
     }
 }

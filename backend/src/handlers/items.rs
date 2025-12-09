@@ -4,7 +4,12 @@ use actix_web::{
 };
 use serde_json::json;
 
-use crate::{context::Context, errors::PerRequestError, models::{ItemResources, ItemWithDetailsResources}, views::{ItemView, ItemWithDetailsView}};
+use crate::{
+    context::Context,
+    errors::PerRequestError,
+    models::{ItemResources, ItemWithDetailsResources},
+    views::{ItemView, ItemWithDetailsView},
+};
 
 pub(super) fn routes(config: &mut ServiceConfig) {
     config
