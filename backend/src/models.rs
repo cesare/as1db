@@ -218,7 +218,8 @@ impl<'a> ItemWithDetailsResources<'a> {
         "};
         let ids: Vec<ItemWithDetails> = sqlx::query_as(statement)
             .fetch_all(&self.context.pool)
-            .await?;
+            .await
+            .inspect_err(|e| log::error!("query failed: {:?}", e))?;
         Ok(ids)
     }
 }

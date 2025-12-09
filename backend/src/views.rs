@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use crate::models::{Category, CategoryId, Class, ClassId, Item, ItemId};
+use crate::models::{Category, CategoryId, Class, ClassId, Item, ItemId, ItemWithDetails};
 
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -48,6 +48,30 @@ impl<'a> ItemView<'a> {
             id: &item.id,
             class_id: &item.class_id,
             name: &item.name,
+        }
+    }
+}
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ItemWithDetailsView<'a> {
+    pub id: &'a ItemId,
+    pub name: &'a String,
+    pub class: ClassView<'a>,
+    pub categories: Vec<CategoryView<'a>>,
+    pub material_items: Vec<ItemView<'a>>,
+    pub material_categories: Vec<CategoryView<'a>>,
+}
+
+impl<'a> ItemWithDetailsView<'a> {
+    pub fn new(item: &'a ItemWithDetails) -> Self {
+        Self {
+            id: &item.id,
+            name: &item.name,
+            class: ClassView::new(&item.class),
+            categories: item.categories.iter().map(|c| CategoryView::new(&c)).collect(),
+            material_items: item.material_items.iter().map(|i| ItemView::new(&i)).collect(),
+            material_categories: item.material_categories.iter().map(|c| CategoryView::new(&c)).collect(),
         }
     }
 }
