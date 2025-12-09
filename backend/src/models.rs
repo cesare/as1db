@@ -160,10 +160,10 @@ impl<'a> MaterialCategoryResources<'a> {
 pub struct ItemWithDetails {
     pub id: ItemId,
     pub name: String,
-    pub class: Class,
-    pub categories: Vec<Category>,
-    pub material_items: Vec<MaterialItem>,
-    pub material_categories: Vec<MaterialCategory>,
+    pub class: Json<Class>,
+    pub categories: Vec<Json<Category>>,
+    pub material_items: Vec<Json<Item>>,
+    pub material_categories: Vec<Json<Category>>,
 }
 
 pub struct ItemWithDetailsResources<'a> {
