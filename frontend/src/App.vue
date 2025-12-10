@@ -1,11 +1,33 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref, onMounted } from "vue";
+import type { Ref } from "vue";
+
+interface Class {
+  id: number,
+  name: string,
+}
+
+interface ClassesResponse {
+  classes: Class[],
+}
+
+const classes: Ref<Class[]>= ref([]);
+
+onMounted(async () => {
+  const response = await fetch("http://localhost:3000/classes");
+  const responseJson: ClassesResponse = await response.json();
+  classes.value = responseJson.classes;
+});
+
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <h1>Classes</h1>
+  <ul>
+    <li v-for="clazz in classes" :key="clazz.id">
+      {{ clazz.name }}
+    </li>
+  </ul>
 </template>
 
 <style scoped></style>
