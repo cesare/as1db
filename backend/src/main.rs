@@ -3,6 +3,7 @@ use actix_web::{App, HttpServer, http::header, middleware::Logger, web::Data};
 use env_logger::Env;
 
 mod context;
+mod datasets;
 mod errors;
 mod handlers;
 mod models;
