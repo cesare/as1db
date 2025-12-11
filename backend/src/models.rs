@@ -4,8 +4,9 @@ use sqlx::{prelude::FromRow, types::Json};
 
 use crate::{context::Context, errors::DatabaseError};
 
-#[derive(Clone, Deserialize, PartialEq, Eq, Serialize, sqlx::Type)]
+#[derive(Clone, Copy, Deserialize, PartialEq, Eq, Serialize, sqlx::Type)]
 #[sqlx(transparent)]
+#[repr(transparent)]
 pub struct ClassId(i32);
 
 #[derive(Clone, Deserialize, FromRow, sqlx::Type)]
@@ -28,6 +29,14 @@ impl<'a> ClassResources<'a> {
             .fetch_all(&self.context.pool)
             .await?;
         Ok(classes)
+    }
+
+    pub async fn find(&self, class_id: &ClassId) -> Result<Class, DatabaseError> {
+        let class: Class = sqlx::query_as("select id, name from classes where id = $1")
+            .bind(class_id)
+            .fetch_one(&self.context.pool)
+            .await?;
+        Ok(class)
     }
 }
 
@@ -83,6 +92,15 @@ impl<'a> ItemResources<'a> {
         let items: Vec<Item> = sqlx::query_as("select id, class_id, name from items order by id")
             .fetch_all(&self.context.pool)
             .await?;
+        Ok(items)
+    }
+
+    pub async fn list_by_class(&self, class: &Class) -> Result<Vec<Item>, DatabaseError> {
+        let items: Vec<Item> =
+            sqlx::query_as("select id, class_id, name from items where class_id = $1 order by id")
+                .bind(class.id)
+                .fetch_all(&self.context.pool)
+                .await?;
         Ok(items)
     }
 }
