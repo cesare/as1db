@@ -22,9 +22,12 @@ const clazz: Ref<Class | null> = ref(null);
 const items: Ref<Item[]>= ref([]);
 
 const route = useRoute()
+type Parameter = typeof route.params.id
 
 watch(() => route.params.id, fetchItems, { immediate: true })
-async function fetchItems(id: any) {
+async function fetchItems(id: Parameter) {
+  if (id == null || Array.isArray(id)) return
+
   const response = await fetch(`http://localhost:3000/classes/${id}`);
   const responseJson: Response = await response.json();
   clazz.value = responseJson.class;
