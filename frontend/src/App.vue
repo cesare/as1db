@@ -4,6 +4,7 @@
 <template>
   <nav>
     <RouterLink to="/">Home</RouterLink>
+    <RouterLink to="/categories">Categories</RouterLink>
   </nav>
   <main>
     <RouterView />
