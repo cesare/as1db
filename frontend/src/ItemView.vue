@@ -36,8 +36,8 @@ const item: Ref<ItemWithDetails | null> = ref(null);
 const route = useRoute()
 type Parameter = typeof route.params.id
 
-watch(() => route.params.id, fetchItems, { immediate: true })
-async function fetchItems(id: Parameter) {
+watch(() => route.params.id, fetchItem, { immediate: true })
+async function fetchItem(id: Parameter) {
   if (id == null || Array.isArray(id)) return
 
   const response = await fetch(`http://localhost:3000/items/${id}`);
