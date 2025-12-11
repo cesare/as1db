@@ -25,7 +25,7 @@ onMounted(async () => {
   <h1>Classes</h1>
   <ul>
     <li v-for="clazz in classes" :key="clazz.id">
-      {{ clazz.name }}
+      <router-link :to="{ name: 'itemsOfClass', params: { id: clazz.id } }">{{ clazz.name }}</router-link>
     </li>
   </ul>
 </template>
