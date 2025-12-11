@@ -40,7 +40,7 @@ async function fetchItems(id: Parameter) {
   <h1>Class: {{ clazz?.name }}</h1>
   <ul>
     <li v-for="item in items" :key="item.id">
-      {{ item.name }}
+      <RouterLink :to="{ name: 'itemDetails', params: { id: item.id } }">{{ item.name }}</RouterLink>
     </li>
   </ul>
 </template>
