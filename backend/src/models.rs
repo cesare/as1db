@@ -66,6 +66,14 @@ impl<'a> CategoryResources<'a> {
                 .await?;
         Ok(categories)
     }
+
+    pub async fn find(&self, category_id: &CategoryId) -> Result<Category, DatabaseError> {
+        let category: Category = sqlx::query_as("select id, name from categories where id = $1")
+            .bind(category_id)
+            .fetch_one(&self.context.pool)
+            .await?;
+        Ok(category)
+    }
 }
 
 #[derive(Clone, Deserialize, PartialEq, Eq, Serialize, sqlx::Type)]
@@ -101,6 +109,25 @@ impl<'a> ItemResources<'a> {
                 .bind(class.id)
                 .fetch_all(&self.context.pool)
                 .await?;
+        Ok(items)
+    }
+
+    pub async fn list_by_category(&self, category: &Category) -> Result<Vec<Item>, DatabaseError> {
+        let statement = indoc! {"
+            select
+                items.id as id,
+                items.class_id as class_id,
+                items.name as name
+            from item_categories as ic
+                inner join items on ic.item_id = items.id
+            where ic.category_id = $1
+            order by 1
+        "};
+        let items: Vec<Item> = sqlx::query_as(statement)
+            .bind(&category.id)
+            .fetch_all(&self.context.pool)
+            .await
+            .inspect_err(|e| log::error!("Query failed: {:?}", e))?;
         Ok(items)
     }
 }

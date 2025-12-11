@@ -62,7 +62,9 @@ async function fetchItem(id: Parameter) {
   <h2>Categories</h2>
   <ul>
     <li v-for="category in item?.categories" :key="category.id">
-      {{ category.name }}
+      <RouterLink :to="{ name: 'itemsOfCategory', params: { id: category.id } }">
+        {{ category.name }}
+      </RouterLink>
     </li>
   </ul>
 
@@ -75,7 +77,9 @@ async function fetchItem(id: Parameter) {
     </li>
 
     <li v-for="mc in item?.materialCategories" :key="mc.id">
-      ({{ mc.name }})
+      <RouterLink :to="{ name: 'itemsOfCategory', params: { id: mc.id } }">
+        ({{ mc.name }})
+      </RouterLink>
     </li>
   </ul>
 </template>
