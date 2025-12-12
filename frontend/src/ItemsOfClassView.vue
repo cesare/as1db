@@ -2,16 +2,7 @@
 import { ref, onMounted, watch } from "vue";
 import type { Ref } from "vue";
 import { useRoute } from "vue-router";
-
-interface Class {
-  id: number,
-  name: string,
-}
-
-interface Item {
-  id: number,
-  name: string,
-}
+import type { Class, Item } from "./models";
 
 interface Response {
   class: Class,

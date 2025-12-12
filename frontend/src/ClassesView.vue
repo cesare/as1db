@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import type { Ref } from "vue";
-
-interface Class {
-  id: number,
-  name: string,
-}
+import type { Class } from "./models";
 
 interface ClassesResponse {
   classes: Class[],

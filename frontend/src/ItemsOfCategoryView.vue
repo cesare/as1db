@@ -2,16 +2,7 @@
 import { ref, watch } from "vue";
 import type { Ref } from "vue";
 import { useRoute } from "vue-router";
-
-interface Category {
-  id: number,
-  name: string,
-}
-
-interface Item {
-  id: number,
-  name: string,
-}
+import type { Category, Item } from "./models";
 
 interface Response {
   category: Category,

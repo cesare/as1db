@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import type { Ref } from "vue";
-
-interface Category {
-  id: number,
-  name: string,
-}
+import type { Category } from "./models";
 
 interface Response {
   categories: Category[],
