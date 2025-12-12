@@ -2,17 +2,13 @@
 import { ref, onMounted } from "vue";
 import type { Ref } from "vue";
 import type { Category } from "./models";
-
-interface Response {
-  categories: Category[],
-}
+import { fetchCategories } from "./api";
 
 const categories: Ref<Category[]>= ref([]);
 
 onMounted(async () => {
-  const response = await fetch("http://localhost:3000/categories");
-  const responseJson: Response = await response.json();
-  categories.value = responseJson.categories;
+  const responseJson = await fetchCategories()
+  categories.value = responseJson.categories
 });
 
 </script>

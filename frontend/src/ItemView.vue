@@ -3,6 +3,7 @@ import { ref, watch } from "vue";
 import type { Ref } from "vue";
 import { useRoute } from "vue-router";
 import type { ItemWithDetails } from "./models";
+import { fetchItemWithDetails } from "./api";
 
 interface Response {
   item: ItemWithDetails,
@@ -17,8 +18,7 @@ watch(() => route.params.id, fetchItem, { immediate: true })
 async function fetchItem(id: Parameter) {
   if (id == null || Array.isArray(id)) return
 
-  const response = await fetch(`http://localhost:3000/items/${id}`);
-  const responseJson: Response = await response.json();
+  const responseJson: Response = await fetchItemWithDetails(id)
   item.value = responseJson.item
 }
 

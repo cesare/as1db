@@ -2,16 +2,12 @@
 import { ref, onMounted } from "vue";
 import type { Ref } from "vue";
 import type { Class } from "./models";
-
-interface ClassesResponse {
-  classes: Class[],
-}
+import { fetchClasses } from "./api";
 
 const classes: Ref<Class[]>= ref([]);
 
 onMounted(async () => {
-  const response = await fetch("http://localhost:3000/classes");
-  const responseJson: ClassesResponse = await response.json();
+  const responseJson = await fetchClasses();
   classes.value = responseJson.classes;
 });
 

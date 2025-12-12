@@ -3,11 +3,7 @@ import { ref, onMounted, watch } from "vue";
 import type { Ref } from "vue";
 import { useRoute } from "vue-router";
 import type { Class, Item } from "./models";
-
-interface Response {
-  class: Class,
-  items: Item[],
-}
+import { fetchItemsOfClass } from "./api";
 
 const clazz: Ref<Class | null> = ref(null);
 const items: Ref<Item[]>= ref([]);
@@ -19,8 +15,7 @@ watch(() => route.params.id, fetchItems, { immediate: true })
 async function fetchItems(id: Parameter) {
   if (id == null || Array.isArray(id)) return
 
-  const response = await fetch(`http://localhost:3000/classes/${id}`);
-  const responseJson: Response = await response.json();
+  const responseJson = await fetchItemsOfClass(id)
   clazz.value = responseJson.class;
   items.value = responseJson.items;
 }
