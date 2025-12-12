@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from "vue";
+import { ref, watch } from "vue";
 import type { Ref } from "vue";
 import { useRoute } from "vue-router";
 import type { Class, Item } from "./models";
