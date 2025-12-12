@@ -1,3 +1,4 @@
+import { BACKEND_BASE_URL } from "./constants";
 import type { Category, Class, Item, ItemWithDetails } from "./models";
 
 interface ClassesResponse {
@@ -5,7 +6,7 @@ interface ClassesResponse {
 }
 
 export const fetchClasses = async (): Promise<ClassesResponse> => {
-  const response = await fetch("http://localhost:3000/classes")
+  const response = await fetch(`${BACKEND_BASE_URL}/classes`)
   return response.json()
 }
 
@@ -14,7 +15,7 @@ interface CategoriesResponse {
 }
 
 export const fetchCategories = async (): Promise<CategoriesResponse> => {
-  const response = await fetch("http://localhost:3000/categories")
+  const response = await fetch(`${BACKEND_BASE_URL}/categories`)
   return response.json()
 }
 
@@ -24,7 +25,7 @@ interface ItemsOfClassResponse {
 }
 
 export const fetchItemsOfClass = async (classId: string): Promise<ItemsOfClassResponse> => {
-  const response = await fetch(`http://localhost:3000/classes/${classId}`)
+  const response = await fetch(`${BACKEND_BASE_URL}/classes/${classId}`)
   return response.json()
 }
 
@@ -34,7 +35,7 @@ interface ItemsOfCategoryResponse {
 }
 
 export const fetchItemsOfCategory = async (categoryId: string): Promise<ItemsOfCategoryResponse> => {
-  const response = await fetch(`http://localhost:3000/categories/${categoryId}`)
+  const response = await fetch(`${BACKEND_BASE_URL}/categories/${categoryId}`)
   return response.json()
 }
 
@@ -43,6 +44,6 @@ interface ItemWithDetailsResponse {
 }
 
 export const fetchItemWithDetails = async (itemId: string): Promise<ItemWithDetailsResponse> => {
-  const response = await fetch(`http://localhost:3000/items/${itemId}`)
+  const response = await fetch(`${BACKEND_BASE_URL}/items/${itemId}`)
   return response.json()
 }
