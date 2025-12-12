@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import type { Ref } from "vue";
-import type { Category } from "./models";
-import { fetchCategories } from "./api";
+import { ref, onMounted } from 'vue'
+import type { Ref } from 'vue'
+import type { Category } from './models'
+import { fetchCategories } from './api'
 
-const categories: Ref<Category[]>= ref([]);
+const categories: Ref<Category[]> = ref([])
 
 onMounted(async () => {
   const responseJson = await fetchCategories()
   categories.value = responseJson.categories
-});
-
+})
 </script>
 
 <template>

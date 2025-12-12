@@ -1,8 +1,8 @@
-import { BACKEND_BASE_URL } from "./constants";
-import type { Category, Class, Item, ItemWithDetails } from "./models";
+import { BACKEND_BASE_URL } from './constants'
+import type { Category, Class, Item, ItemWithDetails } from './models'
 
 interface ClassesResponse {
-  classes: Class[],
+  classes: Class[]
 }
 
 export const fetchClasses = async (): Promise<ClassesResponse> => {
@@ -11,7 +11,7 @@ export const fetchClasses = async (): Promise<ClassesResponse> => {
 }
 
 interface CategoriesResponse {
-  categories: Category[],
+  categories: Category[]
 }
 
 export const fetchCategories = async (): Promise<CategoriesResponse> => {
@@ -20,8 +20,8 @@ export const fetchCategories = async (): Promise<CategoriesResponse> => {
 }
 
 interface ItemsOfClassResponse {
-  class: Class,
-  items: Item[],
+  class: Class
+  items: Item[]
 }
 
 export const fetchItemsOfClass = async (classId: string): Promise<ItemsOfClassResponse> => {
@@ -30,17 +30,19 @@ export const fetchItemsOfClass = async (classId: string): Promise<ItemsOfClassRe
 }
 
 interface ItemsOfCategoryResponse {
-  category: Category,
-  items: Item[],
+  category: Category
+  items: Item[]
 }
 
-export const fetchItemsOfCategory = async (categoryId: string): Promise<ItemsOfCategoryResponse> => {
+export const fetchItemsOfCategory = async (
+  categoryId: string,
+): Promise<ItemsOfCategoryResponse> => {
   const response = await fetch(`${BACKEND_BASE_URL}/categories/${categoryId}`)
   return response.json()
 }
 
 interface ItemWithDetailsResponse {
-  item: ItemWithDetails,
+  item: ItemWithDetails
 }
 
 export const fetchItemWithDetails = async (itemId: string): Promise<ItemWithDetailsResponse> => {

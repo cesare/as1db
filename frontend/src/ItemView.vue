@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
-import type { Ref } from "vue";
-import { useRoute } from "vue-router";
-import type { ItemWithDetails } from "./models";
-import { fetchItemWithDetails } from "./api";
+import { ref, watch } from 'vue'
+import type { Ref } from 'vue'
+import { useRoute } from 'vue-router'
+import type { ItemWithDetails } from './models'
+import { fetchItemWithDetails } from './api'
 
 interface Response {
-  item: ItemWithDetails,
+  item: ItemWithDetails
 }
 
-const item: Ref<ItemWithDetails | null> = ref(null);
+const item: Ref<ItemWithDetails | null> = ref(null)
 
 const route = useRoute()
 type Parameter = typeof route.params.id
@@ -21,7 +21,6 @@ async function fetchItem(id: Parameter) {
   const responseJson: Response = await fetchItemWithDetails(id)
   item.value = responseJson.item
 }
-
 </script>
 
 <template>
