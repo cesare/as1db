@@ -8,3 +8,11 @@ updates:
     directory: "/frontend"
     schedule:
       interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/schema"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "bundler"
+    directory: "/tools"
+    schedule:
+      interval: "daily"
