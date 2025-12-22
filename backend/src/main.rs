@@ -7,6 +7,7 @@ mod datasets;
 mod errors;
 mod handlers;
 mod models;
+mod repositories;
 mod views;
 
 use crate::context::Context;
