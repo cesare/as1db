@@ -1,6 +1,6 @@
 use anyhow::Result;
 use serde::Deserialize;
-use sqlx::{PgPool, Pool, Postgres};
+use sqlx::PgPool;
 
 use crate::repositories::RdbRepositoryFactory;
 
@@ -14,7 +14,6 @@ pub struct Config {
 #[derive(Clone)]
 pub struct Context {
     pub config: Config,
-    pub pool: Pool<Postgres>,
     pub repositories: RdbRepositoryFactory,
 }
 
@@ -22,11 +21,11 @@ impl Context {
     pub fn load() -> Result<Self> {
         let config = envy::from_env::<Config>()?;
         let pool = PgPool::connect_lazy(&config.database_url)?;
+        let repositories = RdbRepositoryFactory::new(pool);
 
         let context = Self {
             config,
-            pool: pool.clone(),
-            repositories: RdbRepositoryFactory::new(pool),
+            repositories,
         };
         Ok(context)
     }
