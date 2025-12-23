@@ -1,9 +1,11 @@
 use crate::models::{Category, CategoryId, Class, ClassId, Item, ItemId};
 
+#[allow(dead_code)]
 pub struct ClassSet {
     classes: Vec<Class>,
 }
 
+#[allow(dead_code)]
 impl ClassSet {
     pub fn new(classes: Vec<Class>) -> Self {
         Self { classes }
@@ -18,10 +20,12 @@ impl ClassSet {
     }
 }
 
+#[allow(dead_code)]
 pub struct CategorySet {
     categories: Vec<Category>,
 }
 
+#[allow(dead_code)]
 impl CategorySet {
     pub fn new(categories: Vec<Category>) -> Self {
         Self { categories }
@@ -36,10 +40,12 @@ impl CategorySet {
     }
 }
 
+#[allow(dead_code)]
 pub struct ItemSet {
     items: Vec<Item>,
 }
 
+#[allow(dead_code)]
 impl ItemSet {
     pub fn new(items: Vec<Item>) -> Self {
         Self { items }

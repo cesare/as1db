@@ -33,18 +33,21 @@ pub struct Item {
     pub name: String,
 }
 
+#[allow(dead_code)]
 #[derive(Clone, Deserialize, FromRow)]
 pub struct ItemCategory {
     pub item_id: ItemId,
     pub category_id: CategoryId,
 }
 
+#[allow(dead_code)]
 #[derive(Clone, Deserialize, FromRow, sqlx::Type)]
 pub struct MaterialItem {
     pub item_id: ItemId,
     pub material_item_id: ItemId,
 }
 
+#[allow(dead_code)]
 #[derive(Clone, Deserialize, FromRow, sqlx::Type)]
 pub struct MaterialCategory {
     pub item_id: ItemId,
