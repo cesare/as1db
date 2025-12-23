@@ -41,10 +41,10 @@ pub trait ItemWithDetailsRepository {
 }
 
 pub trait RepositoryFactory {
-    fn class<'a>(&self) -> Box<dyn ClassRepository + '_>;
-    fn category<'a>(&self) -> Box<dyn CategoryRepository + '_>;
-    fn item<'a>(&self) -> Box<dyn ItemRepository + '_>;
-    fn item_with_details<'a>(&self) -> Box<dyn ItemWithDetailsRepository + '_>;
+    fn class(&self) -> Box<dyn ClassRepository + '_>;
+    fn category(&self) -> Box<dyn CategoryRepository + '_>;
+    fn item(&self) -> Box<dyn ItemRepository + '_>;
+    fn item_with_details(&self) -> Box<dyn ItemWithDetailsRepository + '_>;
 }
 
 #[derive(Clone)]
@@ -59,19 +59,19 @@ impl RdbRepositoryFactory {
 }
 
 impl RepositoryFactory for RdbRepositoryFactory {
-    fn class<'a>(&self) -> Box<dyn ClassRepository + '_> {
+    fn class(&self) -> Box<dyn ClassRepository + '_> {
         Box::new(RdbClassRepository::new(&self.pool))
     }
 
-    fn category<'a>(&self) -> Box<dyn CategoryRepository + '_> {
+    fn category(&self) -> Box<dyn CategoryRepository + '_> {
         Box::new(RdbCategoryRepository::new(&self.pool))
     }
 
-    fn item<'a>(&self) -> Box<dyn ItemRepository + '_> {
+    fn item(&self) -> Box<dyn ItemRepository + '_> {
         Box::new(RdbItemRepository::new(&self.pool))
     }
 
-    fn item_with_details<'a>(&self) -> Box<dyn ItemWithDetailsRepository + '_> {
+    fn item_with_details(&self) -> Box<dyn ItemWithDetailsRepository + '_> {
         Box::new(RdbItemWithDetailsRepository::new(&self.pool))
     }
 }
