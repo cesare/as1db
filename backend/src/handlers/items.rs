@@ -5,10 +5,7 @@ use actix_web::{
 use serde_json::json;
 
 use crate::{
-    context::Context,
-    errors::PerRequestError,
-    models::{ItemId, ItemResources, ItemWithDetailsResources},
-    views::{ItemView, ItemWithDetailsView},
+    context::Context, errors::PerRequestError, models::ItemId, repositories::RepositoryFactory, views::{ItemView, ItemWithDetailsView}
 };
 
 pub(super) fn routes(config: &mut ServiceConfig) {
@@ -19,8 +16,8 @@ pub(super) fn routes(config: &mut ServiceConfig) {
 }
 
 async fn index(context: Data<Context>) -> Result<HttpResponse, PerRequestError> {
-    let resources = ItemResources::new(&context);
-    let items = resources.list().await?;
+    let repository = context.repositories.item();
+    let items = repository.list().await?;
     let response_json = json!({
         "items": items.iter().map(ItemView::new).collect::<Vec<ItemView>>(),
     });
@@ -29,8 +26,8 @@ async fn index(context: Data<Context>) -> Result<HttpResponse, PerRequestError> 
 }
 
 async fn index_with_details(context: Data<Context>) -> Result<HttpResponse, PerRequestError> {
-    let resources = ItemWithDetailsResources::new(&context);
-    let items = resources.list().await?;
+    let repository = context.repositories.item_with_details();
+    let items = repository.list().await?;
     let response_json = json!({
         "items": items.iter().map(ItemWithDetailsView::new).collect::<Vec<ItemWithDetailsView>>(),
     });
@@ -41,8 +38,8 @@ async fn index_with_details(context: Data<Context>) -> Result<HttpResponse, PerR
 async fn show(context: Data<Context>, path: Path<ItemId>) -> Result<HttpResponse, PerRequestError> {
     let item_id = path.into_inner();
 
-    let resources = ItemWithDetailsResources::new(&context);
-    let item = resources.find(&item_id).await?;
+    let repository = context.repositories.item_with_details();
+    let item = repository.find(&item_id).await?;
 
     let response_json = json!({
         "item": ItemWithDetailsView::new(&item),

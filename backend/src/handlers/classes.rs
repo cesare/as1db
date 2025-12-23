@@ -5,10 +5,7 @@ use actix_web::{
 use serde_json::json;
 
 use crate::{
-    context::Context,
-    errors::PerRequestError,
-    models::{ClassId, ClassResources, ItemResources},
-    views::{ClassView, ItemView},
+    context::Context, errors::PerRequestError, models::ClassId, repositories::RepositoryFactory, views::{ClassView, ItemView}
 };
 
 pub(super) fn routes(config: &mut ServiceConfig) {
@@ -18,8 +15,8 @@ pub(super) fn routes(config: &mut ServiceConfig) {
 }
 
 async fn index(context: Data<Context>) -> Result<HttpResponse, PerRequestError> {
-    let resources = ClassResources::new(&context);
-    let classes = resources.list().await?;
+    let repository = context.repositories.class();
+    let classes = repository.list().await?;
     let response_json = json!({
         "classes": classes.iter().map(ClassView::new).collect::<Vec<ClassView>>(),
     });
@@ -32,10 +29,10 @@ async fn show(
     path: Path<ClassId>,
 ) -> Result<HttpResponse, PerRequestError> {
     let class_id = path.into_inner();
-    let class = ClassResources::new(&context).find(&class_id).await?;
+    let class = context.repositories.class().find(&class_id).await?;
 
-    let resources = ItemResources::new(&context);
-    let items = resources.list_by_class(&class).await?;
+    let repository = context.repositories.item();
+    let items = repository.list_by_class(&class).await?;
 
     let response_json = json!({
         "class": ClassView::new(&class),

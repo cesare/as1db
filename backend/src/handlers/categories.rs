@@ -5,10 +5,7 @@ use actix_web::{
 use serde_json::json;
 
 use crate::{
-    context::Context,
-    errors::PerRequestError,
-    models::{CategoryId, CategoryResources, ItemResources},
-    views::{CategoryView, ItemView},
+    context::Context, errors::PerRequestError, models::CategoryId, repositories::RepositoryFactory, views::{CategoryView, ItemView}
 };
 
 pub(super) fn routes(config: &mut ServiceConfig) {
@@ -18,8 +15,8 @@ pub(super) fn routes(config: &mut ServiceConfig) {
 }
 
 async fn index(context: Data<Context>) -> Result<HttpResponse, PerRequestError> {
-    let resources = CategoryResources::new(&context);
-    let categories = resources.list().await?;
+    let repository = context.repositories.category();
+    let categories = repository.list().await?;
     let response_json = json!({
         "categories": categories.iter().map(CategoryView::new).collect::<Vec<CategoryView>>(),
     });
@@ -32,10 +29,10 @@ async fn show(
     path: Path<CategoryId>,
 ) -> Result<HttpResponse, PerRequestError> {
     let category_id = path.into_inner();
-    let category = CategoryResources::new(&context).find(&category_id).await?;
+    let category = context.repositories.category().find(&category_id).await?;
 
-    let resources = ItemResources::new(&context);
-    let items = resources.list_by_category(&category).await?;
+    let repository = context.repositories.item();
+    let items = repository.list_by_category(&category).await?;
 
     let response_json = json!({
         "category": CategoryView::new(&category),
