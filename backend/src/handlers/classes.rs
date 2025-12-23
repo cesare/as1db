@@ -5,7 +5,11 @@ use actix_web::{
 use serde_json::json;
 
 use crate::{
-    context::Context, errors::PerRequestError, models::ClassId, repositories::RepositoryFactory, views::{ClassView, ItemView}
+    context::Context,
+    errors::PerRequestError,
+    models::ClassId,
+    repositories::RepositoryFactory,
+    views::{ClassView, ItemView},
 };
 
 pub(super) fn routes(config: &mut ServiceConfig) {
