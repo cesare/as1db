@@ -1,0 +1,1 @@
+../../schema/prisma/migrations/20251125065305_add_master_data/migration.sql
