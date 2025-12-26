@@ -4,7 +4,7 @@ mod categories;
 mod classes;
 mod items;
 
-pub(super) fn routes(config: &mut ServiceConfig) {
+pub fn routes(config: &mut ServiceConfig) {
     config
         .service(scope("/categories").configure(categories::routes))
         .service(scope("/classes").configure(classes::routes))

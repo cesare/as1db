@@ -2,15 +2,7 @@ use actix_cors::Cors;
 use actix_web::{App, HttpServer, http::header, middleware::Logger, web::Data};
 use env_logger::Env;
 
-mod context;
-mod datasets;
-mod errors;
-mod handlers;
-mod models;
-mod repositories;
-mod views;
-
-use crate::context::Context;
+use as1db::context::Context;
 
 fn build_cors() -> Cors {
     Cors::default()
@@ -34,7 +26,7 @@ async fn main() -> anyhow::Result<()> {
                 "%a %t \"%r\" %s %b \"%{Referer}i\" \"%{User-Agent}i\" %T",
             ))
             .app_data(Data::new(context.clone()))
-            .configure(handlers::routes)
+            .configure(as1db::handlers::routes)
     });
     server.bind(bind_address)?.run().await?;
     Ok(())
