@@ -18,7 +18,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: rust-latest
+    container: rust:latest
     defaults:
       run:
         working-directory: backend
