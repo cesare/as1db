@@ -52,6 +52,7 @@ jobs:
     - name: Run tests
       env:
         DATABASE_URL: ${{ vars.CI_DATABASE_URL }}
+        BIND_ADDRESS: "localhost:3000" # dummy
       run: cargo test --verbose
     - name: Lint
       run: cargo clippy --no-deps
