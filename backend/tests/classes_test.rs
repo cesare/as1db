@@ -1,4 +1,5 @@
 use actix_web::{App, test, web::Data};
+use serde_json::{Value, json};
 use sqlx::PgPool;
 
 mod common;
@@ -17,4 +18,19 @@ async fn index(pool: PgPool) {
     let response = test::call_service(&app, request).await;
 
     assert!(response.status().is_success());
+
+    let response_json: Value = test::read_body_json(response).await;
+    let expected_json = json!({
+        "classes": [
+            {
+                "id": 1,
+                "name": "category-01",
+            },
+            {
+                "id": 2,
+                "name": "category-02",
+            },
+        ],
+    });
+    assert_eq!(response_json, expected_json);
 }
