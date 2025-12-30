@@ -1,5 +1,5 @@
 insert into classes (id, name)
 values
-  (1, 'category-01'),
-  (2, 'category-02')
+  (1, 'class-01'),
+  (2, 'class-02')
 ;

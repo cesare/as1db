@@ -24,11 +24,11 @@ async fn index(pool: PgPool) {
         "classes": [
             {
                 "id": 1,
-                "name": "category-01",
+                "name": "class-01",
             },
             {
                 "id": 2,
-                "name": "category-02",
+                "name": "class-02",
             },
         ],
     });
@@ -54,7 +54,7 @@ async fn show(pool: PgPool) {
     let expected_json = json!({
         "class": {
             "id": 1,
-            "name": "category-01",
+            "name": "class-01",
         },
         "items": [
             {
