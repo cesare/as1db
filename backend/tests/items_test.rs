@@ -14,7 +14,9 @@ async fn index_with_details(pool: PgPool) {
     )
     .await;
 
-    let request = test::TestRequest::get().uri("/items/with_details").to_request();
+    let request = test::TestRequest::get()
+        .uri("/items/with_details")
+        .to_request();
     let response = test::call_service(&app, request).await;
 
     assert!(response.status().is_success());
