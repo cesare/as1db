@@ -18,5 +18,5 @@ serde = "~1.0.228"
 serde_derive = "~1.0.226"
 serde_json = "~1.0.149"
 sqlx = { version = "~0.8.6", features = ["chrono", "migrate", "runtime-tokio", "postgres"] }
-thiserror = "~2.0.17"
+thiserror = "~2.0.18"
 tokio = { version = "1.49.0", features = ["fs", "macros", "rt-multi-thread"] }
