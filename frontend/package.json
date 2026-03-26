@@ -43,7 +43,7 @@
     "npm-run-all2": "^8.0.4",
     "prettier": "3.8.1",
     "start-server-and-test": "^2.1.5",
-    "typescript": "~5.9.0",
+    "typescript": "~6.0.2",
     "vite": "^8.0.1",
     "vite-plugin-vue-devtools": "^8.1.1",
     "vitest": "^4.1.0",
