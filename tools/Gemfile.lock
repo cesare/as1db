@@ -28,7 +28,7 @@ GEM
       fiber-annotation
       fiber-local (~> 1.1)
       json
-    csv (3.3.5)
+    csv (3.3.6)
     date (3.5.1)
     drb (2.2.3)
     erb (6.0.4)
