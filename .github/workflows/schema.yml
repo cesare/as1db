@@ -1,0 +1,33 @@
+name: schema
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "schema/**"
+      - ".github/workflows/schema.yml"
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - "schema/**"
+      - ".github/workflows/schema.yml"
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: schema
+    steps:
+    - uses: actions/checkout@v7
+    - name: Setup node
+      uses: actions/setup-node@v7
+      with:
+        node-version: "24.2.0"
+        cache: "npm"
+        cache-dependency-path: 'schema/package-lock.json'
+    - name: Install dependencies
+      run: npm ci
