@@ -34,7 +34,7 @@
     "@vue/eslint-config-typescript": "^14.9.0",
     "@vue/test-utils": "^2.5.0",
     "@vue/tsconfig": "^0.9.1",
-    "cypress": "^15.21.1",
+    "cypress": "^16.0.0",
     "eslint": "^10.9.1",
     "eslint-plugin-cypress": "^7.0.1",
     "eslint-plugin-vue": "~10.10.0",
