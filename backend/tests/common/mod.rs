@@ -1,6 +1,6 @@
 use as1db::{
     context::{Config, Context},
-    repositories::RdbRepositoryFactory,
+    repositories::RdbRepository,
 };
 use sqlx::PgPool;
 
@@ -12,6 +12,6 @@ pub fn create_context(pool: PgPool) -> Context {
     let config = create_config();
     Context {
         config,
-        repositories: RdbRepositoryFactory::new(pool),
+        repository: RdbRepository::new(pool),
     }
 }

@@ -8,7 +8,7 @@ use crate::{
     context::Context,
     errors::PerRequestError,
     models::ClassId,
-    repositories::RepositoryFactory,
+    repositories::{ClassRepository, ItemRepository, Repository},
     views::{ClassView, ItemView},
 };
 
@@ -19,7 +19,7 @@ pub(super) fn routes(config: &mut ServiceConfig) {
 }
 
 async fn index(context: Data<Context>) -> Result<HttpResponse, PerRequestError> {
-    let repository = context.repositories.class();
+    let repository = context.repository.class();
     let classes = repository.list().await?;
     let response_json = json!({
         "classes": classes.iter().map(ClassView::new).collect::<Vec<ClassView>>(),
@@ -33,9 +33,9 @@ async fn show(
     path: Path<ClassId>,
 ) -> Result<HttpResponse, PerRequestError> {
     let class_id = path.into_inner();
-    let class = context.repositories.class().find(&class_id).await?;
+    let class = context.repository.class().find(&class_id).await?;
 
-    let repository = context.repositories.item();
+    let repository = context.repository.item();
     let items = repository.list_by_class(&class).await?;
 
     let response_json = json!({

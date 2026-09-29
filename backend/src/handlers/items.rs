@@ -8,7 +8,7 @@ use crate::{
     context::Context,
     errors::PerRequestError,
     models::ItemId,
-    repositories::RepositoryFactory,
+    repositories::{ItemRepository, ItemWithDetailsRepository, Repository},
     views::{ItemView, ItemWithDetailsView},
 };
 
@@ -20,7 +20,7 @@ pub(super) fn routes(config: &mut ServiceConfig) {
 }
 
 async fn index(context: Data<Context>) -> Result<HttpResponse, PerRequestError> {
-    let repository = context.repositories.item();
+    let repository = context.repository.item();
     let items = repository.list().await?;
     let response_json = json!({
         "items": items.iter().map(ItemView::new).collect::<Vec<ItemView>>(),
@@ -30,7 +30,7 @@ async fn index(context: Data<Context>) -> Result<HttpResponse, PerRequestError> 
 }
 
 async fn index_with_details(context: Data<Context>) -> Result<HttpResponse, PerRequestError> {
-    let repository = context.repositories.item_with_details();
+    let repository = context.repository.item_with_details();
     let items = repository.list().await?;
     let response_json = json!({
         "items": items.iter().map(ItemWithDetailsView::new).collect::<Vec<ItemWithDetailsView>>(),
@@ -42,7 +42,7 @@ async fn index_with_details(context: Data<Context>) -> Result<HttpResponse, PerR
 async fn show(context: Data<Context>, path: Path<ItemId>) -> Result<HttpResponse, PerRequestError> {
     let item_id = path.into_inner();
 
-    let repository = context.repositories.item_with_details();
+    let repository = context.repository.item_with_details();
     let item = repository.find(&item_id).await?;
 
     let response_json = json!({
