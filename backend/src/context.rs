@@ -2,7 +2,7 @@ use anyhow::Result;
 use serde::Deserialize;
 use sqlx::PgPool;
 
-use crate::repositories::RdbRepositoryFactory;
+use crate::repositories::RdbRepository;
 
 #[derive(Clone, Deserialize)]
 pub struct Config {
@@ -14,19 +14,16 @@ pub struct Config {
 #[derive(Clone)]
 pub struct Context {
     pub config: Config,
-    pub repositories: RdbRepositoryFactory,
+    pub repository: RdbRepository,
 }
 
 impl Context {
     pub fn load() -> Result<Self> {
         let config = envy::from_env::<Config>()?;
         let pool = PgPool::connect_lazy(&config.database_url)?;
-        let repositories = RdbRepositoryFactory::new(pool);
+        let repository = RdbRepository::new(pool);
 
-        let context = Self {
-            config,
-            repositories,
-        };
+        let context = Self { config, repository };
         Ok(context)
     }
 }
